@@ -2,6 +2,8 @@
 
 namespace App\System;
 
+use App\Component\ExampleImage;
+use App\Renderer\BackgroundRenderer;
 use App\Renderer\ExampleImageRenderer;
 use GL\Math\{GLM, Quat, Vec2, Vec3};
 use VISU\ECS\EntitiesInterface;
@@ -18,6 +20,11 @@ use VISU\Graphics\TextureOptions;
 
 class RenderingSystem2D implements SystemInterface
 {
+    /**
+     * Background renderer
+     */
+    private BackgroundRenderer $backgroundRenderer;
+
     /**
      * The example image renderer
      */
@@ -36,6 +43,7 @@ class RenderingSystem2D implements SystemInterface
         private ShaderCollection $shaders
     )
     {
+        $this->backgroundRenderer = new BackgroundRenderer($this->gl, $this->shaders);
         $this->exampleImageRenderer = new ExampleImageRenderer($this->gl, $this->shaders);
         $this->fullscreenRenderer = new FullscreenTextureRenderer($this->gl);
     }
@@ -92,6 +100,9 @@ class RenderingSystem2D implements SystemInterface
         $sceneColorOptions = new TextureOptions;
         $sceneColorOptions->internalFormat = GL_RGB;
         $sceneColor = $context->pipeline->createColorAttachment($sceneRenderTarget, 'sceneColor', $sceneColorOptions);
+
+        // add the background pass
+        $this->backgroundRenderer->attachPass($context->pipeline, $sceneRenderTarget);
 
         // add the image example pass
         $this->exampleImageRenderer->attachPass($context->pipeline, $sceneRenderTarget, $entities->listComponents(ExampleImage::class));

@@ -9,6 +9,7 @@ use VISU\Graphics\Rendering\RenderPass;
 use VISU\Graphics\Rendering\RenderPipeline;
 use VISU\Graphics\Rendering\Resource\RenderTargetResource;
 use VISU\Graphics\ShaderProgram;
+use VISU\Graphics\Texture;
 
 class ExampleImagePass extends RenderPass
 {
@@ -20,6 +21,7 @@ class ExampleImagePass extends RenderPass
     public function __construct(
         private GLState $gl,
         private ShaderProgram $shader,
+        private Texture $sprite,
         private RenderTargetResource $renderTarget,
         private array $exampleImages
     ) {
@@ -38,8 +40,5 @@ class ExampleImagePass extends RenderPass
     public function execute(PipelineContainer $data, PipelineResources $resources): void
     {
         $resources->activateRenderTarget($this->renderTarget);
-
-        glClearColor(0.5, 1, 0.2, 1);
-        glClear(GL_COLOR_BUFFER_BIT);
     }
 }

@@ -6,6 +6,7 @@ use App\Signals\SwitchToSceneSignal;
 use GameContainer;
 use App\System\CameraSystem2D;
 use App\System\RenderingSystem2D;
+use App\System\VisuPhpantSystem;
 use VISU\Graphics\Rendering\Pass\BackbufferData;
 use VISU\Graphics\Rendering\Pass\ClearPass;
 use VISU\Graphics\Rendering\RenderContext;
@@ -35,6 +36,11 @@ class GameViewScene extends BaseScene
      * system: Rendering
      */
     private RenderingSystem2D $renderingSystem;
+
+    /**
+     * system: Phpants
+     */
+    private VisuPhpantSystem $visuPhpantSystem;
 
     /**
      * Function ID for keyboard handler
@@ -72,10 +78,14 @@ class GameViewScene extends BaseScene
             $this->container->resolveShaders()
         );
 
+        // the thing moving the flying phpants
+        $this->visuPhpantSystem = new VisuPhpantSystem;
+
         // bind all systems to the scene itself
         $this->bindSystems([
             $this->cameraSystem,
             $this->renderingSystem,
+            $this->visuPhpantSystem,
         ]);
     }
 

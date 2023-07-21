@@ -3,7 +3,6 @@
 namespace App\Component;
 
 use GL\Math\Vec2;
-use GL\Math\Vec3;
 
 class GameCamera2DComponent
 {
@@ -16,6 +15,11 @@ class GameCamera2DComponent
      * The velocity the focus point is currently moving at
      */
     public Vec2 $focusPointVelocity;
+
+    /**
+     * Camera acceleration
+     */
+    public float $acceleration = 4.5;
 
     /**
      * Constructor

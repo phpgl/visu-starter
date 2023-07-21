@@ -9,10 +9,17 @@ use VISU\Graphics\Rendering\RenderPipeline;
 use VISU\Graphics\Rendering\Resource\RenderTargetResource;
 use VISU\Graphics\ShaderCollection;
 use VISU\Graphics\ShaderProgram;
+use VISU\Graphics\Texture;
+use VISU\Graphics\TextureOptions;
 
 class ExampleImageRenderer
 {
     private ShaderProgram $imageShader;
+
+    /**
+     * The background texture
+     */
+    private Texture $elephantSprite;
 
     public function __construct(
         private GLState $gl,
@@ -21,6 +28,13 @@ class ExampleImageRenderer
     {
         // create the shader program
         $this->imageShader = $this->shaders->get('example_image');
+
+        // this is pixel artish so we want to use nearest neighbor filtering
+        $backgroundOptions = new TextureOptions;
+        $backgroundOptions->minFilter = GL_NEAREST;
+        $backgroundOptions->magFilter = GL_NEAREST;
+        $this->elephantSprite  = new Texture($gl, 'visuphpant');
+        $this->elephantSprite->loadFromFile(VISU_PATH_RESOURCES . '/sprites/visuphpant.png', $backgroundOptions);
     }
 
     /**
@@ -39,6 +53,7 @@ class ExampleImageRenderer
         $pipeline->addPass(new ExampleImagePass(
             $this->gl,
             $this->imageShader,
+            $this->elephantSprite,
             $renderTarget,
             $exampleImages
         ));

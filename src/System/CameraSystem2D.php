@@ -3,10 +3,12 @@
 namespace App\System;
 
 use App\Component\GameCamera2DComponent;
+use GL\Math\Vec3;
 use VISU\ECS\EntitiesInterface;
 use VISU\Graphics\Camera;
 use VISU\Graphics\CameraProjectionMode;
 use VISU\OS\Input;
+use VISU\OS\InputContextMap;
 use VISU\Signal\Dispatcher;
 use VISU\Signals\Input\CursorPosSignal;
 use VISU\Signals\Input\ScrollSignal;
@@ -25,7 +27,7 @@ class CameraSystem2D extends VISUCameraSystem
     public function __construct(
         Input $input,
         Dispatcher $dispatcher,
-        // protected InputContextMap $inputContext,
+        protected InputContextMap $inputContext,
     )
     {
         parent::__construct($input, $dispatcher);
@@ -95,5 +97,28 @@ class CameraSystem2D extends VISUCameraSystem
     {
         $gameCamera = $entities->getSingleton(GameCamera2DComponent::class);
 
+        if ($this->inputContext->actions->isButtonDown('camera_move_left')) {
+            $gameCamera->focusPoint->x = $gameCamera->focusPoint->x - $gameCamera->acceleration;
+        }
+
+        if ($this->inputContext->actions->isButtonDown('camera_move_right')) {
+            $gameCamera->focusPoint->x = $gameCamera->focusPoint->x + $gameCamera->acceleration;
+        }
+
+        if ($this->inputContext->actions->isButtonDown('camera_move_up')) {
+            $gameCamera->focusPoint->y = $gameCamera->focusPoint->y - $gameCamera->acceleration;
+        }
+
+        if ($this->inputContext->actions->isButtonDown('camera_move_down')) {
+            $gameCamera->focusPoint->y = $gameCamera->focusPoint->y + $gameCamera->acceleration;
+        }
+
+        // update the camera transform to the focus point
+        $camera->transform->position = new Vec3(
+            $gameCamera->focusPoint->x,
+            $gameCamera->focusPoint->y,
+            0
+        );
+        $camera->transform->markDirty();
     }
 }

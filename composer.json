@@ -1,0 +1,38 @@
+{
+    "name": "phpgl/visu-starter",
+    "authors": [
+        {
+            "name": "Mario Döring"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../visu"
+        }
+    ],
+    "require": {
+        "phpgl/ide-stubs": "dev-main",
+        "phpgl/visu": "@dev"
+    },
+    
+    "scripts": {
+        "post-root-package-install": [
+            "php ./bin/install.php",
+            "mkdir var/ && mkdir var/cache/ && chmod -R 777 var/"
+        ],
+        "post-autoload-dump": [
+            "ClanCats\\Container\\ComposerContainerFileLoader::generateMap"
+        ]
+    }
+}

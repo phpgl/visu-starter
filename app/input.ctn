@@ -1,0 +1,69 @@
+/**
+ * Base input handler
+ */
+@input: VISU\OS\Input(@window.main, @visu.dispatcher)
+
+/**
+ * Input context mapper
+ */
+@input.context: VISU\OS\InputContextMap(@visu.dispatcher)
+    - register('main_menu', @input.actions.main_menu)
+    - register('level_editor', @input.actions.level_editor)
+    - register('level_editor.selected', @input.actions.level_editor.selected)
+    - switchTo('main_menu')
+
+/**
+ * Actions maps (aka key bindings)
+ */
+
+/**
+ * Main menu actions
+ */
+@input.actions.main_menu: VISU\OS\InputActionMap()
+    - importArrayMap({
+        menu_up: '@Key::UP',
+        menu_down: '@Key::DOWN',
+        menu_left: '@Key::LEFT',
+        menu_right: '@Key::RIGHT',
+        menu_select: '@Key::ENTER',
+        menu_back: '@Key::BACKSPACE',
+    })
+
+/**
+ * Camera controls
+ */
+:input.action.map.game_camera: {
+    camera_move_forward: '@Key::W',
+    camera_move_backward: '@Key::S',
+    camera_move_left: '@Key::A',
+    camera_move_right: '@Key::D',
+    camera_zoom_in: '@Key::E',
+    camera_zoom_out: '@Key::Q',
+}
+
+/**
+ * Level Editor
+ */
+@input.actions.level_editor: VISU\OS\InputActionMap()
+    - importArrayMap(:input.action.map.game_camera)
+    - importArrayMap({
+        create_object: '@Key::C',
+        rebuild_heightmap: '@Key::M',
+        toggle_snapping: '@Key::B',
+    })
+
+@input.actions.level_editor.selected: VISU\OS\InputActionMap()
+    - importArrayMap(:input.action.map.game_camera)
+    - importArrayMap({
+        place: '#click',
+        place_height: '@Key::F'
+        rotate_left: '@Key::COMMA',
+        rotate_right: '@Key::PERIOD',
+        scale_up: '@Key::K',
+        scale_down: '@Key::L',
+        fine_change: '@Key::LEFT_SHIFT',
+        delete: '@Key::BACKSPACE',
+        copy: '@Key::C',
+        rebuild_heightmap: '@Key::M',
+        toggle_snapping: '@Key::B',
+    })

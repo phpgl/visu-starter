@@ -74,6 +74,14 @@ class VisuPhpantSystem implements SystemInterface
             if ($transform->position->y < -32) {
                 $transform->position->y = 2048;
             }
+
+            if ($transform->position->x > 4096) {
+                $transform->position->x = -32;
+            }
+
+            if ($transform->position->y > 2048) {
+                $transform->position->y = -32;
+            }
         }
     }
 

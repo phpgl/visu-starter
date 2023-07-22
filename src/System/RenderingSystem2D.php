@@ -105,7 +105,7 @@ class RenderingSystem2D implements SystemInterface
         $this->backgroundRenderer->attachPass($context->pipeline, $sceneRenderTarget);
 
         // add the image example pass
-        $this->exampleImageRenderer->attachPass($context->pipeline, $sceneRenderTarget, $entities->listComponents(ExampleImage::class));
+        $this->exampleImageRenderer->attachPass($context->pipeline, $sceneRenderTarget, $entities);
 
         // add a pass that renders the scene render target to the backbuffer
         $this->fullscreenRenderer->attachPass($context->pipeline, $backbuffer, $sceneColor);

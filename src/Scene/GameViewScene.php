@@ -151,6 +151,7 @@ class GameViewScene extends BaseScene
     public function update(): void
     {
         $this->cameraSystem->update($this->entities);
+        $this->visuPhpantSystem->update($this->entities);
     }
 
     /**

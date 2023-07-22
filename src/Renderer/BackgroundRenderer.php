@@ -3,7 +3,6 @@
 namespace App\Renderer;
 
 use App\Component\ExampleImage;
-use GL\Math\Mat4;
 use GL\Math\Vec3;
 use VISU\Geo\Transform;
 use VISU\Graphics\GLState;
@@ -89,12 +88,21 @@ class BackgroundRenderer
                 glDisable(GL_DEPTH_TEST);
                 glDisable(GL_CULL_FACE);
 
-
                 $cameraData = $data->get(CameraData::class);
+
+                // create a copy of the view matrix and remove the translation
+                // because we want a parallax effect
+                $view = $cameraData->view->copy();
+                $scale = 0.8;
+                $view[12] = 0.0;
+                $view[13] = 0.0;
+                $view[14] = 0.0;
+                $view->scale(new Vec3($scale));
+                $view->translate($cameraData->renderCamera->transform->position * -1 * $scale);
 
                 // enable our shader and set the uniforms camera uniforms
                 $this->backgroundShader->use();
-                $this->backgroundShader->setUniformMat4('u_view', false, $cameraData->view);
+                $this->backgroundShader->setUniformMat4('u_view', false, $view);
                 $this->backgroundShader->setUniformMat4('u_projection', false, $cameraData->projection);
                 $this->backgroundShader->setUniform1i('u_texture', 0);
                 
@@ -103,10 +111,10 @@ class BackgroundRenderer
 
                 // draw the quad 
                 $transform = new Transform;
-                // $transform->position->x = 2048;
-                // $transform->position->y = 1024;
-                $transform->scale->x = 2048 * 2;
-                $transform->scale->y = 1024 * 2;
+                $transform->scale->x = 2048;
+                $transform->scale->y = 1024;
+                $transform->position->x = 2048;
+                $transform->position->y = 1024;
                 $this->backgroundShader->setUniformMat4('u_model', false, $transform->getLocalMatrix());
                 $this->backgroundVA->draw();
             }

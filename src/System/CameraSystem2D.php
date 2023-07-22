@@ -3,10 +3,13 @@
 namespace App\System;
 
 use App\Component\GameCamera2DComponent;
+use App\Debug\DebugTextOverlay;
+use GL\Math\Vec2;
 use GL\Math\Vec3;
 use VISU\ECS\EntitiesInterface;
 use VISU\Graphics\Camera;
 use VISU\Graphics\CameraProjectionMode;
+use VISU\Graphics\Rendering\RenderContext;
 use VISU\OS\Input;
 use VISU\OS\InputContextMap;
 use VISU\Signal\Dispatcher;
@@ -42,7 +45,9 @@ class CameraSystem2D extends VISUCameraSystem
     {
         parent::register($entities);
 
-        $entities->setSingleton(new GameCamera2DComponent);
+        $gameCamera = new GameCamera2DComponent;
+        $gameCamera->focusPoint = new Vec2(2048, 1024); // in the center of the world (map is 4096x2048)
+        $entities->setSingleton($gameCamera);
 
         // create an inital camera entity
         $cameraEntity = $entities->create();
@@ -112,13 +117,37 @@ class CameraSystem2D extends VISUCameraSystem
         if ($this->inputContext->actions->isButtonDown('camera_move_down')) {
             $gameCamera->focusPoint->y = $gameCamera->focusPoint->y + $gameCamera->acceleration;
         }
+    }
 
-        // update the camera transform to the focus point
-        $camera->transform->position = new Vec3(
-            $gameCamera->focusPoint->x,
-            $gameCamera->focusPoint->y,
-            0
-        );
+    /**
+     * Handles rendering of the scene, here you can attach additional render passes,
+     * modify the render pipeline or customize rendering related data.
+     * 
+     * @param RenderContext $context
+     */
+    public function render(EntitiesInterface $entities, RenderContext $context) : void
+    {
+        $camera = $this->getActiveCamera($entities);
+        $gameCamera = $entities->getSingleton(GameCamera2DComponent::class);
+
+        // get current render target
+        $renderTarget = $context->resources->getActiveRenderTarget();
+
+        $renderWidth = $renderTarget->width() / $renderTarget->contentScaleX;
+        $renderHeight = $renderTarget->height() / $renderTarget->contentScaleY;
+
+        // ensure we don't move the camera outside of the world
+        $gameCamera->focusPoint->x = max($renderWidth * 0.5, $gameCamera->focusPoint->x);
+        $gameCamera->focusPoint->y = max($renderHeight * 0.5, $gameCamera->focusPoint->y);
+        $gameCamera->focusPoint->x = min(4096 - ($renderWidth * 0.5), $gameCamera->focusPoint->x);
+        $gameCamera->focusPoint->y = min(2048 - ($renderHeight * 0.5), $gameCamera->focusPoint->y);
+
+        // move the actual camera in a way that the focus 
+        // point is in the middle of the screen
+        $camera->transform->position->x = $gameCamera->focusPoint->x - ($renderTarget->width() / $renderTarget->contentScaleX * 0.5);
+        $camera->transform->position->y = $gameCamera->focusPoint->y - ($renderTarget->height() / $renderTarget->contentScaleY * 0.5);
         $camera->transform->markDirty();
+
+        parent::render($entities, $context);
     }
 }

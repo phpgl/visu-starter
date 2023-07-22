@@ -21,11 +21,15 @@ class VisuPhpantSystem implements SystemInterface
         $entities->registerComponent(ExampleImage::class);
 
         // create a bunch of phpants
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $entity = $entities->create();
-            $entities->attach($entity, new ExampleImage);
+            $spite = $entities->attach($entity, new ExampleImage);
+            $spite->spriteFrame = (int) rand(0, 2);
+            $spite->spriteFrameTick = (int) rand(0, 100);
+            $spite->speed->x = (float) rand(2, 40) / 10;
+            $spite->speed->y = (float) (rand(-20, 20)) / 10;
             $transform = $entities->attach($entity, new Transform);
-            $transform->position = new Vec3($i * 0.1, 0.5, 0);
+            $transform->position = new Vec3(rand(0, 4096), rand(0, 2048), 0);
             $transform->scale = new Vec3(32, 32, 1);
         }
     }
@@ -46,6 +50,31 @@ class VisuPhpantSystem implements SystemInterface
      */
     public function update(EntitiesInterface $entities) : void
     {
+        // update the sprite frame
+        foreach ($entities->view(ExampleImage::class) as $entity => $exampleImage) {
+            $exampleImage->spriteFrameTick++;
+            if ($exampleImage->spriteFrameTick >= $exampleImage->spriteFrameRate) {
+                $exampleImage->spriteFrameTick = 0;
+                $exampleImage->spriteFrame++;
+                if ($exampleImage->spriteFrame >= 3) {
+                    $exampleImage->spriteFrame = 0;
+                }
+            }
+        }
+        
+        // update the transform
+        foreach ($entities->view(ExampleImage::class) as $entity => $exampleImage) {
+            $transform = $entities->get($entity, Transform::class);
+            $transform->position->x = $transform->position->x - $exampleImage->speed->x;
+            $transform->position->y = $transform->position->y + $exampleImage->speed->y;
+            if ($transform->position->x < -32) {
+                $transform->position->x = 4096;
+            }
+
+            if ($transform->position->y < -32) {
+                $transform->position->y = 2048;
+            }
+        }
     }
 
     /**

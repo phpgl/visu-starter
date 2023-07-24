@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d38fa72c71c2f20c51db15c6b400eda",
+    "content-hash": "1bbc5994c64844cda7ea9e1484b0b73e",
     "packages": [
         {
             "name": "clancats/container",
@@ -164,11 +164,17 @@
         },
         {
             "name": "phpgl/visu",
-            "version": "dev-master",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpgl/visu.git",
+                "reference": "5afcb5e0276fa7475ef9a4dfe6a5bed7c35343b1"
+            },
             "dist": {
-                "type": "path",
-                "url": "../visu",
-                "reference": "6071bd1cfba31ec4a30f74d6304dc034850939f3"
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpgl/visu/zipball/5afcb5e0276fa7475ef9a4dfe6a5bed7c35343b1",
+                "reference": "5afcb5e0276fa7475ef9a4dfe6a5bed7c35343b1",
+                "shasum": ""
             },
             "require": {
                 "clancats/container": "^1.3",
@@ -192,23 +198,16 @@
                     "VISU\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "VISU\\Tests\\": "tests/"
-                }
-            },
-            "scripts": {
-                "post-autoload-dump": [
-                    "ClanCats\\Container\\ComposerContainerFileLoader::generateMap"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "A Modern OpenGL Framework for PHP, ex php-game-framework.",
-            "transport-options": {
-                "relative": true
-            }
+            "support": {
+                "issues": "https://github.com/phpgl/visu/issues",
+                "source": "https://github.com/phpgl/visu/tree/v1.0.0"
+            },
+            "time": "2023-07-22T17:01:04+00:00"
         },
         {
             "name": "psr/log",
@@ -320,8 +319,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpgl/ide-stubs": 20,
-        "phpgl/visu": 20
+        "phpgl/ide-stubs": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

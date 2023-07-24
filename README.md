@@ -11,6 +11,11 @@ This repo contains a quick start scafolding to create VISU based application.
 Use composer to create a new project based on `visu-starter`.
 
 
+```
+composer create-project phpgl/visu-starter -s dev --prefer-dist <YOUR PROJECT NAME>
+```
+
+
 After the installation open the projects directory with a command line and run:
 
 ```

@@ -15,17 +15,10 @@
             "App\\Tests\\": "tests/"
         }
     },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../visu"
-        }
-    ],
     "require": {
         "phpgl/ide-stubs": "dev-main",
-        "phpgl/visu": "@dev"
+        "phpgl/visu": "v1.0.0"
     },
-    
     "scripts": {
         "post-root-package-install": [
             "php ./bin/install.php",

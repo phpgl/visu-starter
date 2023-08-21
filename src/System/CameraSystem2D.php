@@ -51,7 +51,7 @@ class CameraSystem2D extends VISUCameraSystem
 
         // create an inital camera entity
         $cameraEntity = $entities->create();
-        $camera = $entities->attach($cameraEntity, new Camera(CameraProjectionMode::orthographic));
+        $camera = $entities->attach($cameraEntity, new Camera(CameraProjectionMode::orthographicScreen));
         $camera->nearPlane = -10;
         $camera->farPlane = 10;
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1bbc5994c64844cda7ea9e1484b0b73e",
+    "content-hash": "2be339797d549b1e648e8ad1920450a8",
     "packages": [
         {
             "name": "clancats/container",
@@ -164,16 +164,16 @@
         },
         {
             "name": "phpgl/visu",
-            "version": "v1.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpgl/visu.git",
-                "reference": "5afcb5e0276fa7475ef9a4dfe6a5bed7c35343b1"
+                "reference": "9265554e1132493f28034642e5db4d40a442e022"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpgl/visu/zipball/5afcb5e0276fa7475ef9a4dfe6a5bed7c35343b1",
-                "reference": "5afcb5e0276fa7475ef9a4dfe6a5bed7c35343b1",
+                "url": "https://api.github.com/repos/phpgl/visu/zipball/9265554e1132493f28034642e5db4d40a442e022",
+                "reference": "9265554e1132493f28034642e5db4d40a442e022",
                 "shasum": ""
             },
             "require": {
@@ -187,6 +187,7 @@
                 "phpstan/phpstan": "^1.8",
                 "phpunit/phpunit": "^9.5"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "container": {
@@ -205,9 +206,9 @@
             "description": "A Modern OpenGL Framework for PHP, ex php-game-framework.",
             "support": {
                 "issues": "https://github.com/phpgl/visu/issues",
-                "source": "https://github.com/phpgl/visu/tree/v1.0.0"
+                "source": "https://github.com/phpgl/visu/tree/master"
             },
-            "time": "2023-07-22T17:01:04+00:00"
+            "time": "2023-08-14T21:06:30+00:00"
         },
         {
             "name": "psr/log",
@@ -319,7 +320,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpgl/ide-stubs": 20
+        "phpgl/ide-stubs": 20,
+        "phpgl/visu": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
